@@ -40,11 +40,11 @@
                                     <td>{{ $item->jumlah }}</td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
-                                            <a href="{{ url("item/" . $item->id . "/edit") }}"
+                                            <a href="{{ url("received-item/" . $item->id . "/edit") }}"
                                                 class="btn btn-sm btn-warning mr-1" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ url("item/" . $item->id) }}" method="POST"
+                                            <form action="{{ url("received-item/" . $item->id) }}" method="POST"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
                                                 @csrf
                                                 @method("DELETE")

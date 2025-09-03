@@ -69,24 +69,70 @@ class ReceivingItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ReceivingItem $receivingItem)
+    public function edit(ReceivingItem $received_item)
     {
-        //
+
+        return view('Admin.ReceivedItem.edit', [
+            'item_lama' => $received_item,
+            'items' => Item::select('nama')->get()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ReceivingItem $receivingItem)
+    public function update(Request $request, ReceivingItem $received_item)
     {
-        //
+
+        $validatedData = $request->validate([
+            'nama_barang' => 'required',
+            'tanggal_masuk' => 'required|date',
+            'jumlah' => 'required|integer|min:1',
+        ]);
+
+        // Hitung selisih jumlah untuk update stok
+        $selisihJumlah = $validatedData['jumlah'] - $received_item->jumlah;
+
+        // Update stok barang
+        $item = Item::where('nama', $validatedData['nama_barang'])->first();
+
+        $item->stok += $selisihJumlah;
+
+        DB::beginTransaction();
+
+        try {
+            $received_item->update($validatedData);
+            $item->save();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect('/received-item')->with('error', 'Data barang masuk gagal diupdate.');
+        }
+
+        return redirect('/received-item')->with('success', 'Data barang masuk berhasil diupdate.');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ReceivingItem $receivingItem)
+    public function destroy(ReceivingItem $received_item)
     {
-        //
+
+        DB::beginTransaction();
+
+        try {
+            $item = Item::where('nama', $received_item->nama_barang)->first();
+            $item->stok -= $received_item->jumlah;
+            $item->save();
+
+            $received_item->delete();
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect('/received-item')->with('error', 'Data barang masuk gagal dihapus.');
+        }
+
+        return redirect('/received-item')->with('success', 'Data barang masuk berhasil dihapus.');
     }
 }
