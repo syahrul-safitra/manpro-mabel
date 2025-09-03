@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ReceivingItemController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/test', function() {
+    return view('Layouts.main');
+});
+
+Route::resource('/item', ItemController::class);
+Route::resource('/received-item', ReceivingItemController::class);
