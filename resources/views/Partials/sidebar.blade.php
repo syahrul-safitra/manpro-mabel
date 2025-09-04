@@ -31,11 +31,11 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-table"></i>
-            <span>Meja</span>
+            <span>Barang</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="collapse-inner rounded bg-white py-2">
-                <h6 class="collapse-header">List Meja : </h6>
+                <h6 class="collapse-header">Barang</h6>
                 <a class="collapse-item" href="{{ url("/item") }}">Barang </a>
                 <a class="collapse-item" href="{{ url("/received-item") }}">Barang Masuk</a>
                 <a class="collapse-item" href="{{ url("/outgoing-item") }}">Barang Keluar</a>

@@ -37,7 +37,7 @@ class ReceivingItemController extends Controller
      */
     public function store(Request $request)
     {
-         $validatedData = $request->validate([
+        $validatedData = $request->validate([
             'nama_barang' => 'required',
             'tanggal_masuk' => 'required|date',
             'jumlah' => 'required|integer|min:1',

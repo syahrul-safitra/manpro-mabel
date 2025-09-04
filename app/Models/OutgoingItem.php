@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class OutgoingItem extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'nama_barang',
+        'tanggal_keluar',
+        'jumlah',
+    ];
 }

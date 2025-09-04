@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ReceivingItemController;
+use App\Http\Controllers\OutgoingItemController;
 
 
 /*
@@ -26,3 +27,4 @@ Route::get('/test', function() {
 
 Route::resource('/item', ItemController::class);
 Route::resource('/received-item', ReceivingItemController::class);
+Route::resource('/outgoing-item', OutgoingItemController::class);

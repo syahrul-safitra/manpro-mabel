@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('outgoing_items', function (Blueprint $table) {
             $table->id();
             $table->string('nama_barang');
-            $table->date('tanggal_masuk');
+            $table->date('tanggal_keluar');
             $table->integer('jumlah');
 
             $table->foreign('nama_barang')->references('nama')->on('items')->cascadeOnDelete()->cascadeOnUpdate();
