@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\CommunicationController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\OrderProductController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ReceivingItemController;
@@ -28,3 +33,27 @@ Route::get('/test', function() {
 Route::resource('/item', ItemController::class);
 Route::resource('/received-item', ReceivingItemController::class);
 Route::resource('/outgoing-item', OutgoingItemController::class);
+
+Route::resource('/users', UserController::class);
+
+Route::resource('/order', OrderProductController::class);
+
+Route::get('detail-order/{order}', [OrderProductController::class, 'detail']);
+
+Route::controller(MaterialController::class)->group(function() {
+    Route::get('create-material/{order}', 'create');
+    Route::get('edit-material/{material}', 'edit');
+    Route::post('material', 'store');
+    Route::post('material/{material}', 'update');
+    Route::post('destroy-material/{material}', 'destroy');
+});
+
+Route::controller(WorkerController::class)->group(function() {
+    Route::get('create-worker/{order}', 'create');
+    Route::post('/worker', 'store');
+    Route::post('destroy-worker/{worker}', 'destroy');
+});
+
+Route::controller(CommunicationController::class)->group(function() {
+    Route::post('coment', 'store');
+});
