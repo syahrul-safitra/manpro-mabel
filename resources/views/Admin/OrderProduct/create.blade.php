@@ -104,10 +104,10 @@
 
                             <!-- Input Tanggal Selesai -->
                             <div class="form-group">
-                                <label for="tanggal_selesai">Tanggal Selesai</label>
-                                <input type="date" class="form-control @error('waktu_selesai') is-invalid @enderror"
-                                    id="waktu_selesai" name="waktu_selesai" value="{{ old('waktu_selesai') }}">
-                                @error('waktu_selesai')
+                                <label for="tanggal_selesai">Tanggal Akhir</label>
+                                <input type="date" class="form-control @error('waktu_tenggat') is-invalid @enderror"
+                                    id="waktu_tenggat" name="waktu_tenggat" value="{{ old('waktu_tenggat') }}">
+                                @error('waktu_tenggat')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

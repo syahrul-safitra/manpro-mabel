@@ -70,6 +70,8 @@ class CommunicationController extends Controller
      */
     public function destroy(Communication $communication)
     {
-        //
+        $communication->delete();
+
+        return back()->with('success', 'Berhasil menghapus data komen');
     }
 }

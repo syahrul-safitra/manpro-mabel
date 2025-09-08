@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('nama_customer')->nullable();
             $table->string('ukuran');
             $table->date('waktu_mulai');
-            $table->date('waktu_selesai');
+            $table->date('waktu_tenggat');
+            $table->date('waktu_selesai')->nullable();
+            $table->integer('progress')->default(0);
             $table->integer('biaya_pembuatan')->default(0);
             $table->string('desain')->nullable();
             $table->string('gambar_proses')->nullable();

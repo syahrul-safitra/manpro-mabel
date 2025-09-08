@@ -40,7 +40,7 @@ class OrderProductController extends Controller
             'desain' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048', // max 2MB
             'biaya_pembuatan' => 'required|numeric',
             'waktu_mulai' => 'required|date',
-            'waktu_selesai' => 'required|date|after_or_equal:waktu_mulai',
+            'waktu_tenggat' => 'required|date|after_or_equal:waktu_mulai',
         ]);
 
         // Handle upload desain
@@ -83,15 +83,37 @@ class OrderProductController extends Controller
     public function update(Request $request, OrderProduct $order)
     {
 
-        $validatedData = $request->validate([
+        // $validatedData = $request->validate([
+        //     'nama_produk' => 'required|string|max:255',
+        //     'nama_customer' => 'required|string|max:255',
+        //     'ukuran' => 'required|string|max:100',
+        //     'desain' => 'file|mimes:jpeg,png,jpg,pdf|max:2048', // max 2MB
+        //     'biaya_pembuatan' => 'required|numeric',
+        //     'waktu_mulai' => 'required|date',
+        //     'waktu_tenggat' => 'required|date|after_or_equal:waktu_mulai',
+        //     'waktu_selesai' => '',
+        //     'progress' => 'required|numeric|max:100',
+        //     'selesai' => 'required'
+        // ]);
+
+        $rules = [
             'nama_produk' => 'required|string|max:255',
             'nama_customer' => 'required|string|max:255',
             'ukuran' => 'required|string|max:100',
             'desain' => 'file|mimes:jpeg,png,jpg,pdf|max:2048', // max 2MB
             'biaya_pembuatan' => 'required|numeric',
             'waktu_mulai' => 'required|date',
-            'waktu_selesai' => 'required|date|after_or_equal:waktu_mulai',
-        ]);
+            'waktu_tenggat' => 'required|date|after_or_equal:waktu_mulai',
+            'waktu_selesai' => '',
+            'progress' => 'required|numeric|max:100',
+            'selesai' => 'required'
+        ];
+
+        if ($request->waktu_selesai) {
+            $rules['waktu_selesai'] = 'required|date|after_or_equal:waktu_mulai';
+        }
+
+        $validatedData = $request->validate($rules);
 
         // Handle upload desain
         if ($request->hasFile('desain')) {
@@ -124,5 +146,26 @@ class OrderProductController extends Controller
         return view('Admin.OrderProduct.detail', [
             'order' => $order->load('material.item', 'worker.user', 'comment.user')
         ]);
+    }
+
+    public function updateProgress(OrderProduct $order, Request $request) {
+        $validated = $request->validate([
+            'progress' => 'required|max:100|numeric',
+            'gambar_proses' => 'max:2100'
+        ]);
+
+        if ($request->hasFile('gambar_proses')) {
+            $gambar = $request->file('gambar_proses');
+            $gambarName = uniqid() . $gambar->getClientOriginalName();
+            $location = 'File';
+            $gambar->move($location, $gambarName);
+            $validated['gambar_proses'] = $gambarName;
+            File::delete('File/' . $order->gambar_proses);
+        }
+
+        $order->update($validated);
+
+        return back()->with('success', 'Berhasil mengupdate progress');
+
     }
 }

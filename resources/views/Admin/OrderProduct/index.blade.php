@@ -27,8 +27,8 @@
                                 <th width="5%">No</th>
                                 <th width="15%">Nama Produk</th>
                                 <th width="5%">Ukuran</th>
-                                <th width="10%">Waktu Mulai</th>
-                                <th width="10%">Waktu Selesai</th>
+                                <th width="10%">Tanggal Mulai</th>
+                                <th width="10%">Tanggal Akhir</th>
                                 <th width="10%">Status</th>
                                 <th width="15%">Aksi</th>
                             </tr>
@@ -40,9 +40,9 @@
                                     <td>{{ $order->nama_produk }}</td>
                                     <td>{{ $order->ukuran }}</td>
                                     <td>{{ date('d-m-Y', strtotime($order->waktu_mulai)) }}</td>
-                                    <td>{{ date('d-m-Y', strtotime($order->waktu_selesai)) }}</td>
+                                    <td>{{ date('d-m-Y', strtotime($order->waktu_tenggat)) }}</td>
                                     <td><span
-                                            class="badge {{ $order->is_admin === 1 ? 'badge-success' : 'badge-warning' }}">{{ $order->is_admin === 1 ? 'Selesai' : 'Belum Selesai' }}</span>
+                                            class="badge {{ $order->selesai === 1 ? 'badge-success' : 'badge-warning' }}">{{ $order->selesai === 1 ? 'Selesai' : 'Belum Selesai' }}</span>
                                     </td>
 
                                     <td class="text-center">

@@ -39,6 +39,8 @@ Route::resource('/users', UserController::class);
 Route::resource('/order', OrderProductController::class);
 
 Route::get('detail-order/{order}', [OrderProductController::class, 'detail']);
+Route::post('update-progress-order/{order}', [OrderProductController::class, 'updateProgress']);
+
 
 Route::controller(MaterialController::class)->group(function() {
     Route::get('create-material/{order}', 'create');
@@ -56,4 +58,5 @@ Route::controller(WorkerController::class)->group(function() {
 
 Route::controller(CommunicationController::class)->group(function() {
     Route::post('coment', 'store');
+    Route::post('destroy-comment/{communication}', 'destroy');
 });

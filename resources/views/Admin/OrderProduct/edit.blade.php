@@ -9,6 +9,20 @@
                     </div>
                 @endif
 
+                {{-- @if ($errors->any())
+                    <div class="alert alert-danger">
+
+                        <ul>
+
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+
+                        </ul>
+
+                    </div>
+                @endif --}}
+
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h4 class="mb-0">Form Proses Produk</h4>
@@ -106,6 +120,19 @@
 
                             <!-- Input Tanggal Selesai -->
                             <div class="form-group">
+                                <label for="tanggal_selesai">Tanggal Akhir</label>
+                                <input type="date" class="form-control @error('waktu_tenggat') is-invalid @enderror"
+                                    id="waktu_tenggat" name="waktu_tenggat"
+                                    value="{{ old('waktu_tenggat', $order->waktu_tenggat) }}">
+                                @error('waktu_tenggat')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <!-- Input Tanggal Selesai -->
+                            <div class="form-group">
                                 <label for="tanggal_selesai">Tanggal Selesai</label>
                                 <input type="date" class="form-control @error('waktu_selesai') is-invalid @enderror"
                                     id="waktu_selesai" name="waktu_selesai"
@@ -115,6 +142,30 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="progressRange">Nilai Progress: <span
+                                        id="progressValue">{{ $order->progress }}</span>%</label>
+                                <input type="range" class="form-control-range" name="progress" id="progressRange"
+                                    min="0" max="100" value="{{ $order->progress }}">
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="selesai" id="selesai"
+                                        value="1" @checked($order->selesai)>
+                                    <label class="form-check-label" for="selesai">
+                                        Selesai
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="selesai" id="belum_selesai"
+                                        value="0" @checked(!$order->selesai)>
+                                    <label class="form-check-label" for="belum_selesai">
+                                        Belum Selesai
+                                    </label>
+                                </div>
                             </div>
 
                             <!-- Tombol Submit -->
@@ -160,6 +211,15 @@
                 preview.classList.add('d-none');
             }
         }
+
+        // Mengambil elemen input dan span untuk menampilkan nilai
+        const progressRange = document.getElementById('progressRange');
+        const progressValue = document.getElementById('progressValue');
+
+        // Menambahkan event listener untuk memperbarui nilai
+        progressRange.addEventListener('input', function() {
+            progressValue.textContent = this.value;
+        });
     </script>
 @endsection
 

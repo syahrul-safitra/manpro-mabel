@@ -356,6 +356,13 @@
                 <button type="button" class="btn-action btn-payment" data-toggle="modal" data-target="#exampleModal">
                     INI JUGA MODAL
                 </button>
+
+                @if (!$order->selesai)
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#progressModal">
+                        Buka Form Progress
+                    </button>
+                @endif
+
             </div>
 
             <!-- Detail Table -->
@@ -396,16 +403,23 @@
                     </tr>
 
                     <tr>
-                        <th>Waktu Mulai</th>
+                        <th>Tanggal Mulai</th>
                         <td>:</td>
                         <td>{{ date('d-m-Y', strtotime($order->waktu_mulai)) }}
                         <td>
                     </tr>
 
                     <tr>
-                        <th>Waktu Selesai</th>
+                        <th>Tanggal Tenggat</th>
                         <td>:</td>
-                        <td>{{ date('d-m-Y', strtotime($order->waktu_selesai)) }}
+                        <td>{{ date('d-m-Y', strtotime($order->waktu_tenggat)) }}
+                        <td>
+                    </tr>
+
+                    <tr>
+                        <th>Tanggal Selesai</th>
+                        <td>:</td>
+                        <td>{{ $order->waktu_selesai ? date('d-m-Y', strtotime($order->waktu_selesai)) : '' }}
                         <td>
                     </tr>
                     <tr>
@@ -415,6 +429,33 @@
                             <span
                                 class="badge {{ $order->selesai != '1' ? 'badge-warning' : 'badge-success' }}">{{ $order->selesai != '1' ? 'Belum Selesai' : 'Selesai' }}</span>
 
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Progress</th>
+                        <td>:</td>
+                        <td>
+                            @if ($order->progress >= 63)
+                                <span class="badge badge-success">{{ $order->progress }}</span>
+                            @elseif($order->progress >= 33)
+                                <span class="badge badge-warning">{{ $order->progress }}</span>
+                            @else
+                                <span class="badge badge-danger">{{ $order->progress }}</span>
+                            @endif
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Gambar Progress</th>
+                        <td>:</td>
+                        <td>
+                            @if ($order->gambar_proses)
+                                <a href="{{ asset('File/' . $order->gambar_proses) }}" class="btn btn-sm btn-primary mr-1"
+                                    title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            @endif
                         </td>
                     </tr>
                     {{-- <tr>
@@ -459,9 +500,11 @@
 
             <div class="action-buttons">
 
-                <a href="{{ url('create-material/' . $order->id) }}" class="btn btn-info">
-                    Tambah
-                </a>
+                @if (!$order->selesai)
+                    <a href="{{ url('create-material/' . $order->id) }}" class="btn btn-info">
+                        Tambah
+                    </a>
+                @endif
 
             </div>
 
@@ -528,9 +571,11 @@
 
             <div class="action-buttons">
 
-                <a href="{{ url('create-worker/' . $order->id) }}" class="btn btn-info">
-                    Tambah
-                </a>
+                @if (!$order->selesai)
+                    <a href="{{ url('create-worker/' . $order->id) }}" class="btn btn-info">
+                        Tambah
+                    </a>
+                @endif
 
             </div>
 
@@ -625,9 +670,14 @@
                                         <p class="mb-1">{{ $item->pesan }}</p>
                                         <small class="text-muted">{{ $item->created_at->diffForHumans() }}</small>
                                     </div>
-                                    <button class="btn btn-sm btn-outline-danger ml-2">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+
+                                    <form action="{{ url('destroy-comment/' . $item->id) }}" method="POST"
+                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus komen ini?')">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-danger ml-2">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </div>
 
                             </li>
@@ -679,6 +729,43 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- ================================================================================================================================== --}}
+    {{-- Modal Edit Progress --}}
+    <div class="modal fade" id="progressModal" tabindex="-1" role="dialog" aria-labelledby="progressModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="progressModalLabel">Atur Progress</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ url('update-progress-order/' . $order->id) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="progressRange">Nilai Progress: <span
+                                    id="progressValue">{{ $order->progress }}</span>%</label>
+                            <input type="range" class="form-control-range" name="progress" id="progressRange"
+                                min="0" max="100" value="{{ $order->progress }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="imageUpload">Unggah Gambar</label>
+                            <input type="file" class="form-control-file" name="gambar_proses" id="imageUpload"
+                                accept=".jpg, .jpeg, .png">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                 </form>
             </div>
@@ -761,4 +848,15 @@
             </div>
         </div>
     </div> --}}
+
+    <script>
+        // Ambil elemen input dan span
+        const progressRange = document.getElementById('progressRange');
+        const progressValue = document.getElementById('progressValue');
+
+        // Tambahkan event listener untuk memperbarui nilai
+        progressRange.addEventListener('input', function() {
+            progressValue.textContent = this.value;
+        });
+    </script>
 @endsection

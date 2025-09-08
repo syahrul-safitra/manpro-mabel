@@ -15,8 +15,10 @@ class OrderProduct extends Model
         'biaya_pembuatan',
         'ukuran',
         'waktu_mulai',
+        'waktu_tenggat',
         'waktu_selesai',
         'desain',
+        'progress',
         'gambar_proses',
         'selesai'
     ];
