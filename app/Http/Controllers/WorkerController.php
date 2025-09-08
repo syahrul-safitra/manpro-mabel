@@ -92,4 +92,24 @@ class WorkerController extends Controller
 
         return back()->with('success', 'Berhasil menghapus data tukang');
     }
+
+    public function userWorker()
+    {
+        $user = auth()->user();
+
+        $worker = Worker::where('user_id', $user->id)->with('orderProduct')->get();
+
+        return view('User.work', [
+            'worker' => $worker
+        ]);
+    }
+
+    public function detailWorking(OrderProduct $order)
+    {
+        $order->load('worker.user', 'material', 'comment.user');
+
+        return view('User.detail-working', [
+            'order' => $order
+        ]);
+    }
 }
