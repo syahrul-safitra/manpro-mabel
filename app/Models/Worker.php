@@ -17,4 +17,8 @@ class Worker extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function orderProduct() {
+        return $this->belongsTo(OrderProduct::class);
+    }
 }

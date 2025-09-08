@@ -5,6 +5,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\OrderProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkerController;
+use App\Http\Controllers\AuthenticationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ReceivingItemController;
@@ -59,4 +60,21 @@ Route::controller(WorkerController::class)->group(function() {
 Route::controller(CommunicationController::class)->group(function() {
     Route::post('coment', 'store');
     Route::post('destroy-comment/{communication}', 'destroy');
+});
+
+Route::controller(AuthenticationController::class)->group(function() {
+    Route::get('login', 'index')->name('login');
+    Route::post('login', 'verify');
+    Route::post('logout', 'logout');
+});
+
+Route::get('/user-worker', [WorkerController::class, 'userWorker']);
+
+Route::controller(WorkerController::class)->group(function() {
+    Route::get('user-worker', 'userWorker');
+    Route::get('detail-working/{order}', 'detailWorking');
+});
+
+Route::get('/is-user', function() {
+    return auth()->user();
 });
