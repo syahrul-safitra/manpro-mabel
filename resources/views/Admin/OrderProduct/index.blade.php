@@ -1,11 +1,11 @@
-@extends('Layouts.main')
+@extends("Layouts.main")
 
-@section('container')
+@section("container")
     <div class="container-fluid">
         <!-- DataTales Example -->
-        @if (session()->has('success'))
+        @if (session()->has("success"))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
+                {{ session("success") }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -15,7 +15,7 @@
         <div class="card mb-4 shadow">
             <div class="card-header d-flex justify-content-between align-items-center py-3">
                 <h6 class="font-weight-bold text-primary m-0">Data Order</h6>
-                <a href="{{ url('order/create') }}" class="btn btn-primary btn-sm">
+                <a href="{{ url("order/create") }}" class="btn btn-primary btn-sm">
                     <i class="fas fa-plus mr-1"></i> Tambah Pesanan
                 </a>
             </div>
@@ -39,29 +39,29 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $order->nama_produk }}</td>
                                     <td>{{ $order->ukuran }}</td>
-                                    <td>{{ date('d-m-Y', strtotime($order->waktu_mulai)) }}</td>
-                                    <td>{{ date('d-m-Y', strtotime($order->waktu_tenggat)) }}</td>
+                                    <td>{{ date("d-m-Y", strtotime($order->waktu_mulai)) }}</td>
+                                    <td>{{ date("d-m-Y", strtotime($order->waktu_tenggat)) }}</td>
                                     <td><span
-                                            class="badge {{ $order->selesai === 1 ? 'badge-success' : 'badge-warning' }}">{{ $order->selesai === 1 ? 'Selesai' : 'Belum Selesai' }}</span>
+                                            class="badge {{ $order->selesai === 1 ? "badge-success" : "badge-warning" }}">{{ $order->selesai === 1 ? "Selesai" : "Belum Selesai" }}</span>
                                     </td>
 
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
 
-                                            <a href="{{ url('order/' . $order->id . '/edit') }}"
+                                            <a href="{{ url("order/" . $order->id . "/edit") }}"
                                                 class="btn btn-sm btn-warning mr-1" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
 
-                                            <a href="{{ url('detail-order/' . $order->id) }}"
+                                            <a href="{{ url("detail-order/" . $order->id) }}"
                                                 class="btn btn-sm btn-info mr-1" title="Edit">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="fas fa-pen"></i>
                                             </a>
 
-                                            <form action="{{ url('order/' . $order->id) }}" method="POST"
+                                            <form action="{{ url("order/" . $order->id) }}" method="POST"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus order, dan akan menghilangkan data yang berhubungan dengannya?')">
                                                 @csrf
-                                                @method('DELETE')
+                                                @method("DELETE")
                                                 <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -88,11 +88,11 @@
     </div>
 @endsection
 
-@push('styles')
+@push("styles")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 @endpush
 
-@push('scripts')
+@push("scripts")
     <script>
         // Inisialisasi DataTable
         $(document).ready(function() {
