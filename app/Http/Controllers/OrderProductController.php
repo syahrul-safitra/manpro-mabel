@@ -37,6 +37,7 @@ class OrderProductController extends Controller
             'nama_produk' => 'required|string|max:255',
             'nama_customer' => 'required|string|max:255',
             'ukuran' => 'required|string|max:100',
+            'deskripsi' => 'string|max:245',
             'desain' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048', // max 2MB
             'biaya_pembuatan' => 'required|numeric',
             'waktu_mulai' => 'required|date',
@@ -101,6 +102,7 @@ class OrderProductController extends Controller
             'nama_customer' => 'required|string|max:255',
             'ukuran' => 'required|string|max:100',
             'desain' => 'file|mimes:jpeg,png,jpg,pdf|max:2048', // max 2MB
+            'deskripsi' => 'string|max:245',
             'biaya_pembuatan' => 'required|numeric',
             'waktu_mulai' => 'required|date',
             'waktu_tenggat' => 'required|date|after_or_equal:waktu_mulai',
@@ -134,9 +136,12 @@ class OrderProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OrderProduct $orderProduct)
+    public function destroy(OrderProduct $order)
     {
-        //
+        File::delete('File/' . $order->desain);
+        File::delete('File/' . $order->gambar_proses);
+
+        $order->delete();
     }
 
     public function detail(OrderProduct $order ) {

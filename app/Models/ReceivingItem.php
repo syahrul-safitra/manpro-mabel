@@ -14,4 +14,8 @@ class ReceivingItem extends Model
         'tanggal_masuk',
         'jumlah',
     ];
+
+    public function item() {
+        return $this->belongsTo(Item::class, 'nama_barang', 'nama');
+    }
 }

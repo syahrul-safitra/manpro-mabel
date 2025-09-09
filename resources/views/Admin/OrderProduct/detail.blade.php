@@ -343,23 +343,17 @@
                     Kembali
                 </a>
 
-                <a href="{{ url('material/' . $order->id) }}" class="btn-action btn-receipt">
-                    Kembali
-                </a>
-
-                <button type="button" class="btn-action btn-status" data-toggle="modal" data-target="#statusBooking">
-                    INI MODAL
-                </button>
-                {{-- <button type="button" class="btn-action btn-payment" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                    <i class="bi bi-credit-card"></i> Status Pembayaran
-                </button> --}}
-                <button type="button" class="btn-action btn-payment" data-toggle="modal" data-target="#exampleModal">
-                    INI JUGA MODAL
-                </button>
-
                 @if (!$order->selesai)
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#progressModal">
-                        Buka Form Progress
+                        Form Progress
+                    </button>
+                @else
+                    {{-- <button type="button" class="btn-action btn-payment" data-toggle="modal" data-target="#exampleModal">
+                        INI JUGA MODAL
+                    </button> --}}
+
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#laporanModal">
+                        Cetak Invoice
                     </button>
                 @endif
 
@@ -399,6 +393,13 @@
                                 title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Deskripsi</th>
+                        <td>:</td>
+                        <td>{{ $order->deskripsi }}
                         </td>
                     </tr>
 
@@ -515,6 +516,7 @@
                             <th>No</th>
                             <th>Nama Barang</th>
                             <th>Jumlah</th>
+                            <th>Total</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -524,6 +526,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->item->nama }}</td>
                                 <td>{{ $item->jumlah }}</td>
+                                <td>{{ 'Rp ' . number_format($item->jumlah * $item->item->harga_jual, 0, ',', '.') }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center">
                                         <a href="{{ url('edit-material/' . $item->id) }}"
@@ -628,14 +631,14 @@
     <div class="detail-container">
         <!-- Header -->
         <div class="detail-header">
-            <h4><i class="bi bi-box-arrow-up"></i> Diskusi</h4>
+            <h4><i class="bi bi-box-arrow-up"></i> Tanya Progress Pekrjaan</h4>
         </div>
 
         <div class="detail-card">
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title mb-4">Komentar</h5>
+                    <h5 class="card-title mb-4">Progress Pengerjaan</h5>
 
                     <!-- Form input komentar -->
                     <form id="formKomentar" action="{{ url('/coment') }}" method="POST" class="mb-4">
@@ -644,7 +647,7 @@
                         <input type="hidden" name="order_product_id" value="{{ $order->id }}">
                         <div class="input-group">
                             <input type="text" class="form-control rounded-left shadow-sm"
-                                placeholder="💬 Tulis komentar kamu di sini..." name="pesan" id="inputKomentar"
+                                placeholder="💬 Tanyakan progress pekerjaan di sini..." name="pesan" id="inputKomentar"
                                 max="230" required>
                             <div class="input-group-append">
                                 <button class="btn btn-primary rounded-right shadow-sm px-4" type="submit">
@@ -671,13 +674,15 @@
                                         <small class="text-muted">{{ $item->created_at->diffForHumans() }}</small>
                                     </div>
 
-                                    <form action="{{ url('destroy-comment/' . $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus komen ini?')">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-danger ml-2">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    @if (auth()->user()->id === $item->user->id)
+                                        <form action="{{ url('destroy-comment/' . $item->id) }}" method="POST"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus komen ini?')">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-danger ml-2">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
 
                             </li>
@@ -768,6 +773,36 @@
                         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="laporanModal" tabindex="-1" role="dialog" aria-labelledby="laporanModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="laporanModalLabel">Filter Laporan Berdasarkan Tanggal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="tanggalAwal">Tanggal Awal:</label>
+                            <input type="date" class="form-control" id="tanggalAwal">
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggalAkhir">Tanggal Akhir:</label>
+                            <input type="date" class="form-control" id="tanggalAkhir">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-primary">Lihat Laporan</button>
+                </div>
             </div>
         </div>
     </div>

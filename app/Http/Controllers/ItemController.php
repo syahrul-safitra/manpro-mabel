@@ -37,6 +37,8 @@ class ItemController extends Controller
             'deskripsi' => 'required|nullable|string',
             'gambar' => 'required|image|mimes:jpeg,png,jpg|max:2048', // max 2MB
             'stok' => 'required|integer|min:0',
+            'harga_jual' => 'integer|min:0',
+            'harga_beli' => 'integer|min:0',
         ]);
 
         $locationFile = "File";
@@ -77,6 +79,8 @@ class ItemController extends Controller
             'deskripsi' => 'nullable|string',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
             'stok' => 'required|integer|min:0',
+            'harga_jual' => 'integer|min:0',
+            'harga_beli' => 'integer|min:0',
         ];
 
         if($request->nama != $item->nama) {

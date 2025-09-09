@@ -1,4 +1,4 @@
-@extends("Layouts.main")
+@extends('Layouts.main')
 
 <style>
     :root {
@@ -281,7 +281,7 @@
     /* Komentar */
 </style>
 
-@section("container")
+@section('container')
     {{-- Detail Order --}}
     <div class="detail-container">
         <!-- Header -->
@@ -295,11 +295,11 @@
         <div class="detail-card">
             <!-- Success Alert -->
 
-            @if (session()->has("success"))
+            @if (session()->has('success'))
                 <div class="success-alert">
                     <div>
                         <i class="bi bi-check-circle-fill me-2"></i>
-                        <span>{{ session("success") }}</span>
+                        <span>{{ session('success') }}</span>
                     </div>
                     <button class="alert-close">
                         <i class="bi bi-x"></i>
@@ -307,11 +307,11 @@
                 </div>
             @endif
 
-            @if (session()->has("error"))
+            @if (session()->has('error'))
                 <div class="alert alert-danger">
                     <div>
                         <i class="bi bi-check-circle-fill me-2"></i>
-                        <span>{{ session("error") }}</span>
+                        <span>{{ session('error') }}</span>
                     </div>
                     <button class="alert-close">
                         <i class="bi bi-x"></i>
@@ -335,23 +335,10 @@
 
             <!-- Action Buttons -->
             <div class="action-buttons">
-                {{-- <button type="button" class="btn-action btn-status" data-bs-toggle="modal" data-bs-target="#statusModal">
-                    <i class="bi bi-pencil-square"></i> Status Rental
-                </button> --}}
 
-                <a href="{{ url("/user-worker") }}" class="btn-action btn-receipt">
+                <a href="{{ url('/user-worker') }}" class="btn-action btn-receipt">
                     Kembali
                 </a>
-
-                <button type="button" class="btn-action btn-status" data-toggle="modal" data-target="#statusBooking">
-                    INI MODAL
-                </button>
-                {{-- <button type="button" class="btn-action btn-payment" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                    <i class="bi bi-credit-card"></i> Status Pembayaran
-                </button> --}}
-                <button type="button" class="btn-action btn-payment" data-toggle="modal" data-target="#exampleModal">
-                    INI JUGA MODAL
-                </button>
 
                 @if (!$order->selesai)
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#progressModal">
@@ -385,13 +372,13 @@
                     <tr>
                         <th>Biaya</th>
                         <td>:</td>
-                        <td>{{ "Rp " . number_format($order->biaya, 0, ",", ".") }}</td>
+                        <td>{{ 'Rp ' . number_format($order->biaya, 0, ',', '.') }}</td>
                     </tr>
 
                     <tr>
                         <th>Desain</th>
                         <td>:</td>
-                        <td><a href="{{ asset("File/" . $order->desain) }}" class="btn btn-sm btn-warning mr-1"
+                        <td><a href="{{ asset('File/' . $order->desain) }}" class="btn btn-sm btn-warning mr-1"
                                 title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
@@ -399,23 +386,30 @@
                     </tr>
 
                     <tr>
+                        <th>Deskripsi</th>
+                        <td>:</td>
+                        <td>{{ $order->deskripsi }}
+                        </td>
+                    </tr>
+
+                    <tr>
                         <th>Tanggal Mulai</th>
                         <td>:</td>
-                        <td>{{ date("d-m-Y", strtotime($order->waktu_mulai)) }}
+                        <td>{{ date('d-m-Y', strtotime($order->waktu_mulai)) }}
                         <td>
                     </tr>
 
                     <tr>
                         <th>Tanggal Tenggat</th>
                         <td>:</td>
-                        <td>{{ date("d-m-Y", strtotime($order->waktu_tenggat)) }}
+                        <td>{{ date('d-m-Y', strtotime($order->waktu_tenggat)) }}
                         <td>
                     </tr>
 
                     <tr>
                         <th>Tanggal Selesai</th>
                         <td>:</td>
-                        <td>{{ $order->waktu_selesai ? date("d-m-Y", strtotime($order->waktu_selesai)) : "" }}
+                        <td>{{ $order->waktu_selesai ? date('d-m-Y', strtotime($order->waktu_selesai)) : '' }}
                         <td>
                     </tr>
                     <tr>
@@ -423,7 +417,7 @@
                         <td>:</td>
                         <td>
                             <span
-                                class="badge {{ $order->selesai != "1" ? "badge-warning" : "badge-success" }}">{{ $order->selesai != "1" ? "Belum Selesai" : "Selesai" }}</span>
+                                class="badge {{ $order->selesai != '1' ? 'badge-warning' : 'badge-success' }}">{{ $order->selesai != '1' ? 'Belum Selesai' : 'Selesai' }}</span>
 
                         </td>
                     </tr>
@@ -447,7 +441,7 @@
                         <td>:</td>
                         <td>
                             @if ($order->gambar_proses)
-                                <a href="{{ asset("File/" . $order->gambar_proses) }}" class="btn btn-sm btn-primary mr-1"
+                                <a href="{{ asset('File/' . $order->gambar_proses) }}" class="btn btn-sm btn-primary mr-1"
                                     title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -500,7 +494,8 @@
                             <th>No</th>
                             <th>Nama Barang</th>
                             <th>Jumlah</th>
-                            <th>Aksi</th>
+                            <th>Total</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -509,21 +504,8 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->item->nama }}</td>
                                 <td>{{ $item->jumlah }}</td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center">
-                                        <a href="{{ url("edit-material/" . $item->id) }}"
-                                            class="btn btn-sm btn-warning mr-1" style="height: 25px" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="{{ url("destroy-material/" . $item->id) }}" method="POST"
-                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus material ini?')">
-                                            @csrf
-                                            <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <td>{{ 'Rp ' . number_format($item->jumlah * $item->item->harga_jual, 0, ',', '.') }}</td>
+
                             </tr>
                         @empty
                             <tr>
@@ -589,17 +571,17 @@
     <div class="detail-container">
         <!-- Header -->
         <div class="detail-header">
-            <h4><i class="bi bi-box-arrow-up"></i> Diskusi</h4>
+            <h4><i class="bi bi-box-arrow-up"></i> Tanya Progress Pekrjaan</h4>
         </div>
 
         <div class="detail-card">
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title mb-4">Komentar</h5>
+                    <h5 class="card-title mb-4">Progress Pengerjaan</h5>
 
                     <!-- Form input komentar -->
-                    <form id="formKomentar" action="{{ url("/coment") }}" method="POST" class="mb-4">
+                    <form id="formKomentar" action="{{ url('/coment') }}" method="POST" class="mb-4">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                         <input type="hidden" name="order_product_id" value="{{ $order->id }}">
@@ -632,13 +614,15 @@
                                         <small class="text-muted">{{ $item->created_at->diffForHumans() }}</small>
                                     </div>
 
-                                    <form action="{{ url("destroy-comment/" . $item->id) }}" method="POST"
-                                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus komen ini?')">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-danger ml-2">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    @if (auth()->user()->id === $item->user->id)
+                                        <form action="{{ url('destroy-comment/' . $item->id) }}" method="POST"
+                                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus komen ini?')">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-danger ml-2">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
 
                             </li>
@@ -704,7 +688,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url("update-progress-order/" . $order->id) }}" method="POST"
+                <form action="{{ url('update-progress-order/' . $order->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
@@ -728,83 +712,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Status Booking Modal -->
-    <!-- Modal -->
-    {{-- <div class="modal fade" id="statusBooking" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ubah Status Booking</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ url('set-status-booking1/' . $booking->id) }}" method="POST">
-                        @csrf
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="status_booked" id="statusPending"
-                                value="pending" @checked($booking->status_booking == 'pending')>
-                            <label class="form-check-label" for="statusPending">
-                                Pending
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="status_booked" id="statusBooked"
-                                value="booked" @checked($booking->status_booking == 'booked')>
-                            <label class="form-check-label" for="statusBooked">
-                                Booked
-                            </label>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div> --}}
-
-    <!-- Modal -->
-    {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form action="{{ url('set-status-pembayaran1/' . $booking->id) }}" method="post">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Status Pembayaran</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Ubah Status Pembayaran</p>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" value="belum_dikonfirmasi"
-                                name="status_pembayaran" id="pending" required @checked($booking->status_pembayaran == 'belum_dikonfirmasi')>
-                            <label class="form-check-label" for="pending">
-                                Belum dikonfirmasi
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="status_pembayaran"
-                                value="sudah_dikonfirmasi" id="telahDibayar" required @checked($booking->status_pembayaran == 'sudah_dikonfirmasi')>
-                            <label class="form-check-label" for="telahDibayar">
-                                Sudah dikonfirmasi
-                            </label>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div> --}}
 
     <script>
         // Ambil elemen input dan span

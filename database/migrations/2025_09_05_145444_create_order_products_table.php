@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('waktu_mulai');
             $table->date('waktu_tenggat');
             $table->date('waktu_selesai')->nullable();
+            $table->string('deskripsi')->nullable();
             $table->integer('progress')->default(0);
             $table->integer('biaya_pembuatan')->default(0);
             $table->string('desain')->nullable();

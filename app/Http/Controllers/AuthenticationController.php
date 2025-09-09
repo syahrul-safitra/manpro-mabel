@@ -12,6 +12,15 @@ class AuthenticationController extends Controller
      */
     public function index()
     {
+
+        if (auth()->check()) {
+            if (auth()->user()->is_admin) {
+                return redirect('/');
+            }
+
+            return redirect('/user-worker');
+        }
+
         return view('Auth.login');
     }
 
@@ -74,7 +83,7 @@ class AuthenticationController extends Controller
             $request->session()->regenerate();
 
             if(auth()->user()->is_admin == 1) {
-                return redirect()->intended('/dashboard');
+                return redirect()->intended('/');
             }
 
             return redirect()->intended('/user-worker');

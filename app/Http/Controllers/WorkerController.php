@@ -47,7 +47,8 @@ class WorkerController extends Controller
 
         $orderProduct->load('worker', 'material');
         
-        $check = $orderProduct->material->where('id', 1)->first();
+        // check data pada worker apakah sudah ada
+        $check = $orderProduct->worker->where('user_id',$validated['user_id'] )->first();
 
         if( $check) {
             return redirect('detail-order/'  . $orderProduct->id)->with('error', 'Tukang sudah ada');

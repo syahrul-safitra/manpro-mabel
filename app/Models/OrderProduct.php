@@ -14,6 +14,7 @@ class OrderProduct extends Model
         'nama_customer',
         'biaya_pembuatan',
         'ukuran',
+        'deskripsi',
         'waktu_mulai',
         'waktu_tenggat',
         'waktu_selesai',

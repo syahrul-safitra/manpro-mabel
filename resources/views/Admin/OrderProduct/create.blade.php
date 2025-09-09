@@ -56,6 +56,18 @@
                                 @enderror
                             </div>
 
+                            <!-- Input Deskripsi -->
+                            <div class="form-group">
+                                <label for="deskripsi">Deskripsi</label>
+                                <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" rows="4"
+                                    placeholder="Masukkan deskripsi produk" maxlength="245">{{ old('deskripsi') }}</textarea>
+                                @error('deskripsi')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
                             <!-- Input Biaya -->
                             <div class="form-group">
                                 <label for="biaya_pembuatan">Biaya Pembuatan (RP)</label>

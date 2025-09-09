@@ -12,6 +12,8 @@ class Item extends Model
     protected $fillable = [
         'nama', 
         'deskripsi',
+        'harga_jual',
+        'harga_beli',
         'gambar',
         'stok'
     ];

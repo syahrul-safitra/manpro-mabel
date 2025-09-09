@@ -1,11 +1,11 @@
-@extends("Layouts.main")
+@extends('Layouts.main')
 
-@section("container")
+@section('container')
     <div class="container-fluid">
         <!-- DataTales Example -->
-        @if (session()->has("success"))
+        @if (session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session("success") }}
+                {{ session('success') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -15,7 +15,7 @@
         <div class="card mb-4 shadow">
             <div class="card-header d-flex justify-content-between align-items-center py-3">
                 <h6 class="font-weight-bold text-primary m-0">Data Barang Keluar</h6>
-                <a href="{{ url("outgoing-item/create") }}" class="btn btn-primary btn-sm">
+                <a href="{{ url('outgoing-item/create') }}" class="btn btn-primary btn-sm">
                     <i class="fas fa-plus mr-1"></i> Tambah Barang Keluar
                 </a>
             </div>
@@ -26,8 +26,9 @@
                             <tr>
                                 <th width="5%">No</th>
                                 <th width="20%">Nama Barang</th>
-                                <th width="35%">Tanggal Keluar</th>
+                                <th width="10%">Tanggal Keluar</th>
                                 <th width="10%">Jumlah</th>
+                                <th width="25%">Total</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -36,18 +37,20 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nama_barang }}</td>
-                                    <td>{{ date("d-m-Y", strtotime($item->tanggal_keluar)) }}</td>
+                                    <td>{{ date('d-m-Y', strtotime($item->tanggal_keluar)) }}</td>
                                     <td>{{ $item->jumlah }}</td>
+                                    <td>{{ 'Rp ' . number_format($item->jumlah * $item->item->harga_jual, 0, ',', '.') }}
+
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center">
-                                            <a href="{{ url("outgoing-item/" . $item->id . "/edit") }}"
+                                            <a href="{{ url('outgoing-item/' . $item->id . '/edit') }}"
                                                 class="btn btn-sm btn-warning mr-1" title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <form action="{{ url("outgoing-item/" . $item->id) }}" method="POST"
+                                            <form action="{{ url('outgoing-item/' . $item->id) }}" method="POST"
                                                 onsubmit="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">
                                                 @csrf
-                                                @method("DELETE")
+                                                @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -73,11 +76,11 @@
     </div>
 @endsection
 
-@push("styles")
+@push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 @endpush
 
-@push("scripts")
+@push('scripts')
     <script>
         // Inisialisasi DataTable
         $(document).ready(function() {

@@ -1,11 +1,11 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-golf-ball"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Admin Billiard</div>
+        <div class="sidebar-brand-text mx-3">SIPM</div>
     </a>
 
     <!-- Divider -->
@@ -14,7 +14,7 @@
     @if (auth()->user()->is_admin === 1)
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="{{ url("/dashboard") }}">
+            <a class="nav-link" href="{{ url('/') }}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -37,37 +37,37 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="collapse-inner rounded bg-white py-2">
                     <h6 class="collapse-header">Barang</h6>
-                    <a class="collapse-item" href="{{ url("/item") }}">Barang </a>
-                    <a class="collapse-item" href="{{ url("/received-item") }}">Barang Masuk</a>
-                    <a class="collapse-item" href="{{ url("/outgoing-item") }}">Barang Keluar</a>
+                    <a class="collapse-item" href="{{ url('/item') }}">Barang </a>
+                    <a class="collapse-item" href="{{ url('/received-item') }}">Barang Masuk</a>
+                    <a class="collapse-item" href="{{ url('/outgoing-item') }}">Barang Keluar</a>
                 </div>
             </div>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item">
-            <a class="nav-link" href="{{ url("/users") }}">
+            <a class="nav-link" href="{{ url('/users') }}">
                 <i class="fas fa-fw fa-users"></i>
                 <span>User</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item">
-            <a class="nav-link" href="{{ url("/order") }}">
+            <a class="nav-link" href="{{ url('/order') }}">
                 <i class="fas fa-fw fa-user-cog"></i>
                 <span>Order</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item">
-            <a class="nav-link" href="{{ url("/edit-admin") }}">
+            <a class="nav-link" href="{{ url('/edit-admin') }}">
                 <i class="fas fa-fw fa-user-cog"></i>
                 <span>Admin</span></a>
         </li>
     @else
         <!-- Nav Item - Tables -->
         <li class="nav-item">
-            <a class="nav-link" href="{{ url("/order") }}">
+            <a class="nav-link" href="{{ url('/user-worker') }}">
                 <i class="fas fa-fw fa-user-cog"></i>
                 <span>Pekerjaan</span></a>
         </li>

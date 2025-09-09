@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('nama')->unique();
             $table->text('deskripsi');
             $table->string('gambar')->nullable();
+            $table->integer('harga_beli')->default(0);
+            $table->integer('harga_jual')->default(0);
             $table->integer('stok')->default(0);
             $table->timestamps();
         });

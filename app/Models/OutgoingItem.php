@@ -14,4 +14,8 @@ class OutgoingItem extends Model
         'tanggal_keluar',
         'jumlah',
     ];
+
+    public function item() {
+        return $this->belongsTo(Item::class, 'nama_barang', 'nama');
+    }
 }
