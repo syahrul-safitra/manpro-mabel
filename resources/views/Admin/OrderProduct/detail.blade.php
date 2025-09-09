@@ -1,4 +1,4 @@
-@extends('Layouts.main')
+@extends("Layouts.main")
 
 <style>
     :root {
@@ -281,7 +281,7 @@
     /* Komentar */
 </style>
 
-@section('container')
+@section("container")
     {{-- Detail Order --}}
     <div class="detail-container">
         <!-- Header -->
@@ -295,11 +295,11 @@
         <div class="detail-card">
             <!-- Success Alert -->
 
-            @if (session()->has('success'))
+            @if (session()->has("success"))
                 <div class="success-alert">
                     <div>
                         <i class="bi bi-check-circle-fill me-2"></i>
-                        <span>{{ session('success') }}</span>
+                        <span>{{ session("success") }}</span>
                     </div>
                     <button class="alert-close">
                         <i class="bi bi-x"></i>
@@ -307,11 +307,11 @@
                 </div>
             @endif
 
-            @if (session()->has('error'))
+            @if (session()->has("error"))
                 <div class="alert alert-danger">
                     <div>
                         <i class="bi bi-check-circle-fill me-2"></i>
-                        <span>{{ session('error') }}</span>
+                        <span>{{ session("error") }}</span>
                     </div>
                     <button class="alert-close">
                         <i class="bi bi-x"></i>
@@ -339,7 +339,7 @@
                     <i class="bi bi-pencil-square"></i> Status Rental
                 </button> --}}
 
-                <a href="{{ url('/order') }}" class="btn-action btn-receipt">
+                <a href="{{ url("/order") }}" class="btn-action btn-receipt">
                     Kembali
                 </a>
 
@@ -347,14 +347,10 @@
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#progressModal">
                         Form Progress
                     </button>
-                @else
-                    {{-- <button type="button" class="btn-action btn-payment" data-toggle="modal" data-target="#exampleModal">
-                        INI JUGA MODAL
-                    </button> --}}
-
+                    {{-- @else
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#laporanModal">
                         Cetak Invoice
-                    </button>
+                    </button> --}}
                 @endif
 
             </div>
@@ -383,15 +379,14 @@
                     <tr>
                         <th>Biaya</th>
                         <td>:</td>
-                        <td>{{ 'Rp ' . number_format($order->biaya, 0, ',', '.') }}</td>
+                        <td>{{ "Rp " . number_format($order->biaya, 0, ",", ".") }}</td>
                     </tr>
 
                     <tr>
                         <th>Desain</th>
                         <td>:</td>
-                        <td><a href="{{ asset('File/' . $order->desain) }}" class="btn btn-sm btn-warning mr-1"
-                                title="Edit">
-                                <i class="fas fa-edit"></i>
+                        <td><a href="{{ asset("File/" . $order->desain) }}" class="btn btn-sm btn-info mr-1" title="Edit">
+                                <i class="fas fa-image"></i>
                             </a>
                         </td>
                     </tr>
@@ -406,21 +401,21 @@
                     <tr>
                         <th>Tanggal Mulai</th>
                         <td>:</td>
-                        <td>{{ date('d-m-Y', strtotime($order->waktu_mulai)) }}
+                        <td>{{ date("d-m-Y", strtotime($order->waktu_mulai)) }}
                         <td>
                     </tr>
 
                     <tr>
                         <th>Tanggal Tenggat</th>
                         <td>:</td>
-                        <td>{{ date('d-m-Y', strtotime($order->waktu_tenggat)) }}
+                        <td>{{ date("d-m-Y", strtotime($order->waktu_tenggat)) }}
                         <td>
                     </tr>
 
                     <tr>
                         <th>Tanggal Selesai</th>
                         <td>:</td>
-                        <td>{{ $order->waktu_selesai ? date('d-m-Y', strtotime($order->waktu_selesai)) : '' }}
+                        <td>{{ $order->waktu_selesai ? date("d-m-Y", strtotime($order->waktu_selesai)) : "" }}
                         <td>
                     </tr>
                     <tr>
@@ -428,7 +423,7 @@
                         <td>:</td>
                         <td>
                             <span
-                                class="badge {{ $order->selesai != '1' ? 'badge-warning' : 'badge-success' }}">{{ $order->selesai != '1' ? 'Belum Selesai' : 'Selesai' }}</span>
+                                class="badge {{ $order->selesai != "1" ? "badge-warning" : "badge-success" }}">{{ $order->selesai != "1" ? "Belum Selesai" : "Selesai" }}</span>
 
                         </td>
                     </tr>
@@ -452,13 +447,28 @@
                         <td>:</td>
                         <td>
                             @if ($order->gambar_proses)
-                                <a href="{{ asset('File/' . $order->gambar_proses) }}" class="btn btn-sm btn-primary mr-1"
+                                <a href="{{ asset("File/" . $order->gambar_proses) }}" class="btn btn-sm btn-primary mr-1"
                                     title="Edit">
-                                    <i class="fas fa-edit"></i>
+                                    <i class="fas fa-image"></i>
                                 </a>
                             @endif
                         </td>
                     </tr>
+
+                    @if ($order->selesai)
+                        <tr>
+                            <th>Invoiece</th>
+                            <td>:</td>
+                            <td>
+                                <form action="{{ url("invoice/" . $order->id) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-primary mr-1">
+                                        <i class="fas fa-file-invoice"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endif
                     {{-- <tr>
                         <th>Status Pembayaran</th>
                         <td>:</td>
@@ -502,7 +512,7 @@
             <div class="action-buttons">
 
                 @if (!$order->selesai)
-                    <a href="{{ url('create-material/' . $order->id) }}" class="btn btn-info">
+                    <a href="{{ url("create-material/" . $order->id) }}" class="btn btn-info">
                         Tambah
                     </a>
                 @endif
@@ -526,14 +536,14 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->item->nama }}</td>
                                 <td>{{ $item->jumlah }}</td>
-                                <td>{{ 'Rp ' . number_format($item->jumlah * $item->item->harga_jual, 0, ',', '.') }}</td>
+                                <td>{{ "Rp " . number_format($item->jumlah * $item->item->harga_jual, 0, ",", ".") }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center">
-                                        <a href="{{ url('edit-material/' . $item->id) }}"
+                                        <a href="{{ url("edit-material/" . $item->id) }}"
                                             class="btn btn-sm btn-warning mr-1" style="height: 25px" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="{{ url('destroy-material/' . $item->id) }}" method="POST"
+                                        <form action="{{ url("destroy-material/" . $item->id) }}" method="POST"
                                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus material ini?')">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
@@ -560,7 +570,6 @@
         </div>
     </div>
 
-
     {{-- =========================================================================================================================================================================== --}}
     {{-- Detail Pekerja --}}
     <div class="detail-container">
@@ -575,7 +584,7 @@
             <div class="action-buttons">
 
                 @if (!$order->selesai)
-                    <a href="{{ url('create-worker/' . $order->id) }}" class="btn btn-info">
+                    <a href="{{ url("create-worker/" . $order->id) }}" class="btn btn-info">
                         Tambah
                     </a>
                 @endif
@@ -598,7 +607,7 @@
                                 <td>{{ $worker->user->name }}</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center">
-                                        <form action="{{ url('destroy-worker/' . $worker->id) }}" method="POST"
+                                        <form action="{{ url("destroy-worker/" . $worker->id) }}" method="POST"
                                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus tukang ini?')">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
@@ -625,7 +634,6 @@
         </div>
     </div>
 
-
     {{-- =========================================================================================================================================================================== --}}
     {{-- Diskusi --}}
     <div class="detail-container">
@@ -641,7 +649,7 @@
                     <h5 class="card-title mb-4">Progress Pengerjaan</h5>
 
                     <!-- Form input komentar -->
-                    <form id="formKomentar" action="{{ url('/coment') }}" method="POST" class="mb-4">
+                    <form id="formKomentar" action="{{ url("/coment") }}" method="POST" class="mb-4">
                         @csrf
                         <input type="hidden" name="user_id" value="1">
                         <input type="hidden" name="order_product_id" value="{{ $order->id }}">
@@ -650,7 +658,7 @@
                                 placeholder="💬 Tanyakan progress pekerjaan di sini..." name="pesan" id="inputKomentar"
                                 max="230" required>
                             <div class="input-group-append">
-                                <button class="btn btn-primary rounded-right shadow-sm px-4" type="submit">
+                                <button class="btn btn-primary rounded-right px-4 shadow-sm" type="submit">
                                     <i class="fa fa-paper-plane"></i> Kirim
                                 </button>
                             </div>
@@ -675,7 +683,7 @@
                                     </div>
 
                                     @if (auth()->user()->id === $item->user->id)
-                                        <form action="{{ url('destroy-comment/' . $item->id) }}" method="POST"
+                                        <form action="{{ url("destroy-comment/" . $item->id) }}" method="POST"
                                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus komen ini?')">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-outline-danger ml-2">
@@ -693,11 +701,7 @@
 
         </div>
 
-
     </div>
-
-
-
 
     {{-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- --}}
     <!-- Status Rental Modal -->
@@ -752,7 +756,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('update-progress-order/' . $order->id) }}" method="POST"
+                <form action="{{ url("update-progress-order/" . $order->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">

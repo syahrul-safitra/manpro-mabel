@@ -53,7 +53,7 @@
                                     <td colspan="6" class="py-3 text-center">
                                         <div class="text-muted">
                                             <i class="fas fa-inbox fa-2x mb-2"></i>
-                                            <p>Belum ada data produk</p>
+                                            <p>Belum ada pekerjaan</p>
                                         </div>
                                     </td>
                                 </tr>

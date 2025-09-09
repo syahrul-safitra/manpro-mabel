@@ -1,4 +1,4 @@
-@extends('Layouts.main')
+@extends("Layouts.main")
 
 <style>
     :root {
@@ -281,7 +281,7 @@
     /* Komentar */
 </style>
 
-@section('container')
+@section("container")
     {{-- Detail Order --}}
     <div class="detail-container">
         <!-- Header -->
@@ -295,11 +295,11 @@
         <div class="detail-card">
             <!-- Success Alert -->
 
-            @if (session()->has('success'))
+            @if (session()->has("success"))
                 <div class="success-alert">
                     <div>
                         <i class="bi bi-check-circle-fill me-2"></i>
-                        <span>{{ session('success') }}</span>
+                        <span>{{ session("success") }}</span>
                     </div>
                     <button class="alert-close">
                         <i class="bi bi-x"></i>
@@ -307,11 +307,11 @@
                 </div>
             @endif
 
-            @if (session()->has('error'))
+            @if (session()->has("error"))
                 <div class="alert alert-danger">
                     <div>
                         <i class="bi bi-check-circle-fill me-2"></i>
-                        <span>{{ session('error') }}</span>
+                        <span>{{ session("error") }}</span>
                     </div>
                     <button class="alert-close">
                         <i class="bi bi-x"></i>
@@ -336,7 +336,7 @@
             <!-- Action Buttons -->
             <div class="action-buttons">
 
-                <a href="{{ url('/user-worker') }}" class="btn-action btn-receipt">
+                <a href="{{ url("/user-worker") }}" class="btn-action btn-receipt">
                     Kembali
                 </a>
 
@@ -372,15 +372,14 @@
                     <tr>
                         <th>Biaya</th>
                         <td>:</td>
-                        <td>{{ 'Rp ' . number_format($order->biaya, 0, ',', '.') }}</td>
+                        <td>{{ "Rp " . number_format($order->biaya, 0, ",", ".") }}</td>
                     </tr>
 
                     <tr>
                         <th>Desain</th>
                         <td>:</td>
-                        <td><a href="{{ asset('File/' . $order->desain) }}" class="btn btn-sm btn-warning mr-1"
-                                title="Edit">
-                                <i class="fas fa-edit"></i>
+                        <td><a href="{{ asset("File/" . $order->desain) }}" class="btn btn-sm btn-info mr-1" title="Edit">
+                                <i class="fas fa-image"></i>
                             </a>
                         </td>
                     </tr>
@@ -395,21 +394,21 @@
                     <tr>
                         <th>Tanggal Mulai</th>
                         <td>:</td>
-                        <td>{{ date('d-m-Y', strtotime($order->waktu_mulai)) }}
+                        <td>{{ date("d-m-Y", strtotime($order->waktu_mulai)) }}
                         <td>
                     </tr>
 
                     <tr>
                         <th>Tanggal Tenggat</th>
                         <td>:</td>
-                        <td>{{ date('d-m-Y', strtotime($order->waktu_tenggat)) }}
+                        <td>{{ date("d-m-Y", strtotime($order->waktu_tenggat)) }}
                         <td>
                     </tr>
 
                     <tr>
                         <th>Tanggal Selesai</th>
                         <td>:</td>
-                        <td>{{ $order->waktu_selesai ? date('d-m-Y', strtotime($order->waktu_selesai)) : '' }}
+                        <td>{{ $order->waktu_selesai ? date("d-m-Y", strtotime($order->waktu_selesai)) : "" }}
                         <td>
                     </tr>
                     <tr>
@@ -417,7 +416,7 @@
                         <td>:</td>
                         <td>
                             <span
-                                class="badge {{ $order->selesai != '1' ? 'badge-warning' : 'badge-success' }}">{{ $order->selesai != '1' ? 'Belum Selesai' : 'Selesai' }}</span>
+                                class="badge {{ $order->selesai != "1" ? "badge-warning" : "badge-success" }}">{{ $order->selesai != "1" ? "Belum Selesai" : "Selesai" }}</span>
 
                         </td>
                     </tr>
@@ -441,9 +440,9 @@
                         <td>:</td>
                         <td>
                             @if ($order->gambar_proses)
-                                <a href="{{ asset('File/' . $order->gambar_proses) }}" class="btn btn-sm btn-primary mr-1"
+                                <a href="{{ asset("File/" . $order->gambar_proses) }}" class="btn btn-sm btn-primary mr-1"
                                     title="Edit">
-                                    <i class="fas fa-edit"></i>
+                                    <i class="fas fa-image"></i>
                                 </a>
                             @endif
                         </td>
@@ -504,7 +503,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->item->nama }}</td>
                                 <td>{{ $item->jumlah }}</td>
-                                <td>{{ 'Rp ' . number_format($item->jumlah * $item->item->harga_jual, 0, ',', '.') }}</td>
+                                <td>{{ "Rp " . number_format($item->jumlah * $item->item->harga_jual, 0, ",", ".") }}</td>
 
                             </tr>
                         @empty
@@ -581,7 +580,7 @@
                     <h5 class="card-title mb-4">Progress Pengerjaan</h5>
 
                     <!-- Form input komentar -->
-                    <form id="formKomentar" action="{{ url('/coment') }}" method="POST" class="mb-4">
+                    <form id="formKomentar" action="{{ url("/coment") }}" method="POST" class="mb-4">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
                         <input type="hidden" name="order_product_id" value="{{ $order->id }}">
@@ -615,7 +614,7 @@
                                     </div>
 
                                     @if (auth()->user()->id === $item->user->id)
-                                        <form action="{{ url('destroy-comment/' . $item->id) }}" method="POST"
+                                        <form action="{{ url("destroy-comment/" . $item->id) }}" method="POST"
                                             onsubmit="return confirm('Apakah Anda yakin ingin menghapus komen ini?')">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-outline-danger ml-2">
@@ -688,7 +687,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ url('update-progress-order/' . $order->id) }}" method="POST"
+                <form action="{{ url("update-progress-order/" . $order->id) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">

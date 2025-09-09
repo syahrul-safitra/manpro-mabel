@@ -9,7 +9,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Home Billiard (Dashboard)</title>
+        <title>Mebel Pak Eko</title>
 
         <!-- Custom fonts for this template-->
         <link href="{{ asset("FE/vendor/fontawesome-free/css/all.min.css") }}" rel="stylesheet" type="text/css">
@@ -306,7 +306,8 @@
 
         <!-- Bootstrap core JavaScript-->
         <script src="{{ asset("FE/vendor/jquery/jquery.min.js") }}"></script>
-        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        {{-- <script src="https://unpkg.com/@popperjs/core@2"></script> --}}
+        <script src="{{ asset("FE/js/popper.min.js") }}"></script>
         <script src="{{ asset("FE/vendor/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
 
         <!-- Core plugin JavaScript-->
